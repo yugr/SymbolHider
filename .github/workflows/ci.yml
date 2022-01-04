@@ -1,0 +1,32 @@
+# TODO:
+# * proper deploy (with dependencies, etc.)
+# * sanitizers
+# * Coverity
+# # Valgrind
+
+name: CI
+on:
+  push:
+    paths-ignore:
+    - 'LICENSE.txt'
+    - 'README.md'
+    - '.gitignore'
+  pull_request:
+    paths-ignore:
+    - 'LICENSE.txt'
+    - 'README.md'
+    - '.gitignore'
+jobs:
+  Baseline:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04, ubuntu-latest]
+        cc: [gcc, clang]
+    runs-on: ${{ matrix.os }}
+    env:
+      CC: ${{ matrix.cc }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests
+      run: scripts/travis.sh

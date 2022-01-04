@@ -23,3 +23,4 @@ $ sym-hider -h
 
 * Support 32-bit ELFs
 * Hide by wildcards
+* More tests (e.g. system test)
