@@ -1,5 +1,7 @@
 [![License](http://img.shields.io/:license-MIT-blue.svg)](https://github.com/yugr/SymbolHider/blob/master/LICENSE.txt)
 [![Build Status](https://github.com/yugr/SymbolHider/actions/workflows/ci.yml/badge.svg)](https://github.com/yugr/SymbolHider/actions)
+[![codecov](https://codecov.io/gh/yugr/SymbolHider/branch/master/graph/badge.svg)](https://codecov.io/gh/yugr/SymbolHider)
+[![Total alerts](https://img.shields.io/lgtm/alerts/g/yugr/SymbolHider.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/yugr/SymbolHider/alerts/)
 
 # What's this?
 
