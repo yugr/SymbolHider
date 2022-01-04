@@ -1,0 +1,12 @@
+# Vim
+.*swp
+
+# Binaries
+bin/*
+
+# GDB temp files
+.gdb_history
+
+# Test files
+a.out*
+lib*.so
