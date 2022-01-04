@@ -5,8 +5,8 @@
  * found in the LICENSE.txt file.
  */
 
-#ifndef HIDER_H
-#define HIDER_H
+#ifndef COMMON_H
+#define COMMON_H
 
 #define PREFIX "sym-hider: "
 
