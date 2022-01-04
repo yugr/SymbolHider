@@ -11,3 +11,4 @@ bin/*
 a.out*
 lib*.so
 *.o
+libs.txt
