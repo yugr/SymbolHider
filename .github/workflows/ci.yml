@@ -30,3 +30,14 @@ jobs:
     - uses: actions/checkout@v2
     - name: Run tests
       run: scripts/travis.sh
+  Coverage:
+    needs: Baseline
+    runs-on: ubuntu-latest
+    environment: secrets
+    env:
+      COVERAGE: 1
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run tests and upload coverage
+      run: scripts/travis.sh

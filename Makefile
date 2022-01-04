@@ -8,6 +8,11 @@ CC ?= gcc
 CFLAGS = -g -Wall -Wextra -Werror
 LDFLAGS = -g
 
+ifneq (,$(COVERAGE))
+  DEBUG = 1
+  CFLAGS += --coverage -DNDEBUG
+  LDFLAGS += --coverage
+endif
 ifeq (,$(DEBUG))
   CFLAGS += -O2
   LDFLAGS += -Wl,-O2

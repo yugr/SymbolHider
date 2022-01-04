@@ -19,3 +19,9 @@ make clean all
 # Run tests
 
 make check
+
+# Upload coverage
+if test -n "${CODECOV_TOKEN:-}"; then
+  curl --retry 5 -s https://codecov.io/bash > codecov.bash
+  bash codecov.bash -Z
+fi
