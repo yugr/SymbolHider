@@ -21,7 +21,8 @@
 #include <assert.h>
 
 void hide_symbols(const char *file, const char *out_file,
-                  const char **hidden_syms, size_t num_hidden_syms) {
+                  const char **hidden_syms, size_t num_hidden_syms,
+                  int hide_or_unhide) {
   const int inplace = !out_file;
 
   int fd = open(file, inplace ? O_RDWR : O_RDONLY);
@@ -52,8 +53,11 @@ void hide_symbols(const char *file, const char *out_file,
 
   switch (ehdr->e_type) {
     case ET_REL:
+      break;
     case ET_DYN:
     case ET_EXEC:
+      if (!hide_or_unhide)
+        fprintf(stderr, PREFIX "warning: --unhide will likely not work for already linked files");
       break;
     default:
       fprintf(stderr, PREFIX "bad ELF type in %s: only ET_{REL,DYN,EXEC} are supported", file);
@@ -99,7 +103,7 @@ void hide_symbols(const char *file, const char *out_file,
     for (size_t j = 0; j < num_hidden_syms; ++j) {
       if (0 == strcmp(hidden_syms[j], name)) {
         sym->st_other &= ~0x3;
-        sym->st_other |= STV_HIDDEN;
+        sym->st_other |= hide_or_unhide ? STV_HIDDEN : STV_DEFAULT;
         // sym->st_info = ELF64_ST_INFO(STB_LOCAL, ELF64_ST_TYPE(sym->st_info)); TODO: do we need this ?!
         break;
       }

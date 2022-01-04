@@ -11,6 +11,6 @@
 #include <stdlib.h>
 
 void hide_symbols(const char *file, const char *out_file,
-                  const char **syms, size_t nsyms);
+                  const char **syms, size_t nsyms, int hide_or_unhide);
 
 #endif

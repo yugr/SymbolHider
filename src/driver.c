@@ -22,8 +22,11 @@ Usage: %s [OPT]... SOFILE SYM...\n\
 Hide symbols in shared library.\n\
 \n\
 Options:\n\
-  -h, --help      Print this help and exit.\n\
-  -v, --verbose   Enable debug prints.\n\
+  -o OFILE, --output OFILE   Output result to another file.\n\
+  --hide                     Hide symbols (default).\n\
+  --unhide                   Un-hide symbols.\n\
+  -h, --help                 Print this help and exit.\n\
+  -v, --verbose              Enable debug prints.\n\
 ", prog);
   exit(0);
 }
@@ -32,11 +35,16 @@ int main(int argc, char *argv[]) {
   const char *me = basename((char *)argv[0]);
 
   const char *out_file = NULL;
+  int hide = 1;
   while (1) {
     static struct option long_opts[] = {
       {"output", required_argument, 0, 'o'},
       {"verbose", no_argument, 0, 'v'},
       {"help", no_argument, 0, 'h'},
+#define OPT_HIDE 1
+      {"hide", no_argument, 0, OPT_HIDE},
+#define OPT_UNHIDE 2
+      {"unhide", no_argument, 0, OPT_UNHIDE},
     };
 
     int opt_index = 0;
@@ -54,6 +62,12 @@ int main(int argc, char *argv[]) {
       break;
     case 'h':
       usage(me);
+      break;
+    case OPT_HIDE:
+      hide = 1;
+      break;
+    case OPT_UNHIDE:
+      hide = 0;
       break;
     default:
       abort();
@@ -79,7 +93,7 @@ int main(int argc, char *argv[]) {
   if (!out_file)
     out_file = file;
 
-  hide_symbols(file, out_file, syms, nsyms);
+  hide_symbols(file, out_file, syms, nsyms, hide);
 
   return 0;
 }

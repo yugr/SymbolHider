@@ -24,6 +24,7 @@ all: bin/sym-hider
 check:
 	tests/basic/run.sh
 	tests/relocatable/run.sh
+	tests/unhide/run.sh
 	@echo SUCCESS
 
 bin/sym-hider: $(OBJS) Makefile
