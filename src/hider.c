@@ -53,6 +53,14 @@ void hide_symbols(const char *file, const char *out_file,
 
   const Elf64_Ehdr *ehdr = (const Elf64_Ehdr *)start;
 
+  switch (ehdr->e_ident[EI_CLASS]) {
+    case ELFCLASS64:
+      break;
+    default:
+      fprintf(stderr, PREFIX "32-bit ELFs are not yet supported\n");
+      exit(1);
+  }
+
   switch (ehdr->e_type) {
     case ET_REL:
       break;
