@@ -15,6 +15,12 @@ To hide some symbols in a library, run tool like
 $ sym-hider libxyz.so foo bar
 ```
 
+To instead _unhide_ some symbols, run tool like
+```
+$ sym-hider --unhide libxyz.so foo bar
+```
+(usually this will not work for already linked files i.e. executables and shlibs).
+
 For more details run
 ```
 $ sym-hider -h
