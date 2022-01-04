@@ -20,6 +20,8 @@
 #include <errno.h>
 #include <assert.h>
 
+extern int warn;
+
 void hide_symbols(const char *file, const char *out_file,
                   const char **hidden_syms, size_t num_hidden_syms,
                   int hide_or_unhide) {
@@ -56,7 +58,7 @@ void hide_symbols(const char *file, const char *out_file,
       break;
     case ET_DYN:
     case ET_EXEC:
-      if (!hide_or_unhide)
+      if (!hide_or_unhide && warn)
         fprintf(stderr, PREFIX "warning: --unhide will likely not work for already linked files\n");
       break;
     default:

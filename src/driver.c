@@ -15,6 +15,7 @@
 #include <string.h>
 
 int verbose;
+int warn = 1;
 
 static void usage(const char *prog) {
   printf("\
@@ -27,6 +28,7 @@ Options:\n\
   --unhide                   Un-hide symbols.\n\
   -h, --help                 Print this help and exit.\n\
   -v, --verbose              Enable debug prints.\n\
+  -w, --no-warnings          Disable warnings.\n\
 ", prog);
   exit(0);
 }
@@ -38,17 +40,18 @@ int main(int argc, char *argv[]) {
   int hide = 1;
   while (1) {
     static struct option long_opts[] = {
-      {"output", required_argument, 0, 'o'},
-      {"verbose", no_argument, 0, 'v'},
       {"help", no_argument, 0, 'h'},
 #define OPT_HIDE 1
       {"hide", no_argument, 0, OPT_HIDE},
+      {"no-warnings", no_argument, 0, 'w'},
+      {"output", required_argument, 0, 'o'},
 #define OPT_UNHIDE 2
       {"unhide", no_argument, 0, OPT_UNHIDE},
+      {"verbose", no_argument, 0, 'v'},
     };
 
     int opt_index = 0;
-    int c = getopt_long(argc, argv, "vho:", long_opts, &opt_index);
+    int c = getopt_long(argc, argv, "ho:vw", long_opts, &opt_index);
 
     if (c == -1)
       break;
@@ -68,6 +71,9 @@ int main(int argc, char *argv[]) {
       break;
     case OPT_UNHIDE:
       hide = 0;
+      break;
+    case 'w':
+      warn = 0;
       break;
     default:
       abort();
