@@ -12,7 +12,7 @@ CC=${CC:-gcc}
 
 $CC a.c -c -fPIC
 
-readelf -sW a.o | grep 'GLOBAL.*foo'
+readelf -sW a.o | grep 'DEFAULT.*foo'
 
 ../../bin/sym-hider a.o foo
-readelf -sW a.o | grep 'LOCAL.*foo'
+readelf -sW a.o | grep 'HIDDEN.*foo'

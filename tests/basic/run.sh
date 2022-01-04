@@ -15,9 +15,9 @@ $CC tester.c -Wl,--no-as-needed liba.so -D_GNU_SOURCE -ldl
 
 export LD_LIBRARY_PATH=$PWD:${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
 
-readelf -W --dyn-syms liba.so | grep 'GLOBAL.*foo'
+readelf -W --dyn-syms liba.so | grep 'DEFAULT.*foo'
 ./a.out | grep "Found foo"
 
 ../../bin/sym-hider liba.so foo
-readelf -W --dyn-syms liba.so | grep 'LOCAL.*foo'
+readelf -W --dyn-syms liba.so | grep 'HIDDEN.*foo'
 ! ./a.out | grep "Found foo"

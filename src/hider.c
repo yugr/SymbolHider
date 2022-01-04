@@ -100,7 +100,7 @@ void hide_symbols(const char *file, const char *out_file,
       if (0 == strcmp(hidden_syms[j], name)) {
         sym->st_other &= ~0x3;
         sym->st_other |= STV_HIDDEN;
-        sym->st_info = ELF64_ST_INFO(STB_LOCAL, ELF64_ST_TYPE(sym->st_info));
+        // sym->st_info = ELF64_ST_INFO(STB_LOCAL, ELF64_ST_TYPE(sym->st_info)); TODO: do we need this ?!
         break;
       }
     }
