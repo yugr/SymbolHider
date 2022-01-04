@@ -76,6 +76,9 @@ int main(int argc, char *argv[]) {
   const char **syms = malloc(sizeof(const char *) * nsyms);
   memcpy(syms, argv + optind, sizeof(const char *) * nsyms);
 
+  if (!out_file)
+    out_file = file;
+
   hide_symbols(file, out_file, syms, nsyms);
 
   return 0;

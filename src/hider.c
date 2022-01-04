@@ -9,7 +9,6 @@
 #include "hider.h"
 
 #include <sys/stat.h>
-#include <sys/mman.h>
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -38,12 +37,14 @@ void hide_symbols(const char *file, const char *out_file,
   }
 
   const off_t file_size = st.st_size;
-  char *start = mmap(0, file_size, inplace ? PROT_READ | PROT_WRITE : PROT_READ,
-                     MAP_PRIVATE, fd, 0);
-  if (start == NULL || start == MAP_FAILED) {
-    fprintf(stderr, PREFIX "mmap for %s failed: %s", file, strerror (errno));
+  char *start = malloc(file_size);
+  ssize_t nread = read(fd, start, file_size);
+  if (nread < 0 || nread != file_size) {
+    fprintf(stderr, PREFIX "failed to read contents of %s\n", file);
     exit(1);
   }
+
+  close(fd);
 
   // Read header
 
@@ -94,24 +95,15 @@ void hide_symbols(const char *file, const char *out_file,
     }
   }
 
-  // Clean up
+  // Write results
 
-  if (out_file) {
-    int out_fd = open(out_file, O_WRONLY);
-    ssize_t written = write(out_fd, start, file_size);
-    if (written < 0 || written < file_size) {
-      fprintf(stderr, PREFIX "failed to write output file %s\n", out_file);
-      exit(1);
-    }
-    close(out_fd);
-  } else if (0 != msync(start, file_size, MS_SYNC)) {
-    fprintf(stderr, PREFIX "failed to synch file %s\n", file);
+  int out_fd = open(out_file, O_WRONLY);
+
+  ssize_t written = write(out_fd, start, file_size);
+  if (written < 0 || written < file_size) {
+    fprintf(stderr, PREFIX "failed to write output file %s\n", out_file);
     exit(1);
   }
 
-  if(0 != munmap(start, file_size)) {
-    fprintf(stderr, PREFIX "failed to unmap file %s\n", file);
-    exit(1);
-  }
-  close(fd);
+  close(out_fd);
 }
