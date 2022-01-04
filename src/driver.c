@@ -75,14 +75,14 @@ int main(int argc, char *argv[]) {
   }
 
   if (optind >= argc) {
-    fprintf(stderr, "error: ELF file not specified in command line...");
+    fprintf(stderr, "error: ELF file not specified in command line...\n");
     return 0;
   }
 
   const char *file = argv[optind++];
 
   if (optind >= argc) {
-    fprintf(stderr, "error: no symbols specified in command line...");
+    fprintf(stderr, "error: no symbols specified in command line...\n");
     return 0;
   }
 

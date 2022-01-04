@@ -57,10 +57,10 @@ void hide_symbols(const char *file, const char *out_file,
     case ET_DYN:
     case ET_EXEC:
       if (!hide_or_unhide)
-        fprintf(stderr, PREFIX "warning: --unhide will likely not work for already linked files");
+        fprintf(stderr, PREFIX "warning: --unhide will likely not work for already linked files\n");
       break;
     default:
-      fprintf(stderr, PREFIX "bad ELF type in %s: only ET_{REL,DYN,EXEC} are supported", file);
+      fprintf(stderr, PREFIX "bad ELF type in %s: only ET_{REL,DYN,EXEC} are supported\n", file);
       exit(1);
   }
   const int is_reloc = ehdr->e_type == ET_REL;
