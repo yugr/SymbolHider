@@ -10,3 +10,4 @@ bin/*
 # Test files
 a.out*
 lib*.so
+*.o

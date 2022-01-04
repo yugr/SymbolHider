@@ -50,41 +50,52 @@ void hide_symbols(const char *file, const char *out_file,
 
   const Elf64_Ehdr *ehdr = (const Elf64_Ehdr *)start;
 
-  // Find .dynsym
+  switch (ehdr->e_type) {
+    case ET_REL:
+    case ET_DYN:
+    case ET_EXEC:
+      break;
+    default:
+      fprintf(stderr, PREFIX "bad ELF type in %s: only ET_{REL,DYN,EXEC} are supported", file);
+      exit(1);
+  }
+  const int is_reloc = ehdr->e_type == ET_REL;
+
+  // Find symtab
 
   const Elf64_Shdr *shdr = (const Elf64_Shdr *)(start + ehdr->e_shoff);
   Elf64_Half shnum = ehdr->e_shnum;
 
-  Elf64_Sym *dynsym = NULL;
-  const char *dynstr = NULL;
+  Elf64_Sym *symtab = NULL;
+  const char *strtab = NULL;
   Elf64_Xword sym_count = 0;
 
   for (Elf64_Half i = 0; i < shnum; ++i) {
-    if (shdr[i].sh_type != SHT_DYNSYM)
+    if (shdr[i].sh_type != (is_reloc ? SHT_SYMTAB : SHT_DYNSYM))
       continue;
 
-    if (dynsym) {
-      fprintf(stderr, PREFIX "multiple .dynsym sections in %s\n", file);
+    if (symtab) {
+      fprintf(stderr, PREFIX "multiple .dynsym/.symtab sections in %s\n", file);
       exit(1);
     }
 
-    dynstr = start + shdr[shdr[i].sh_link].sh_offset;
+    strtab = start + shdr[shdr[i].sh_link].sh_offset;
 
-    dynsym = (Elf64_Sym *)(start + shdr[i].sh_offset);
+    symtab = (Elf64_Sym *)(start + shdr[i].sh_offset);
     sym_count = shdr[i].sh_size / shdr[i].sh_entsize;
     assert(shdr[i].sh_entsize == sizeof(Elf64_Sym));
   }
 
-  if (!dynsym) {
-    fprintf(stderr, PREFIX "failed to locate .dynsym section in %s\n", file);
+  if (!symtab) {
+    fprintf(stderr, PREFIX "failed to locate .dynsym/.symtab section in %s\n", file);
     exit(1);
   }
 
   // Locate target symbols and change visibility
 
   for (Elf64_Xword i = 0; i < sym_count; ++i) {
-    Elf64_Sym *sym = &dynsym[i];
-    const char *name = &dynstr[sym->st_name];
+    Elf64_Sym *sym = &symtab[i];
+    const char *name = &strtab[sym->st_name];
     for (size_t j = 0; j < num_hidden_syms; ++j) {
       if (0 == strcmp(hidden_syms[j], name)) {
         sym->st_other &= ~0x3;
