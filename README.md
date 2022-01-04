@@ -1,4 +1,5 @@
 [![License](http://img.shields.io/:license-MIT-blue.svg)](https://github.com/yugr/SymbolHider/blob/master/LICENSE.txt)
+[![Build Status](https://github.com/yugr/SymbolHider/actions/workflows/ci.yml/badge.svg)](https://github.com/yugr/SymbolHider/actions)
 
 # What's this?
 
