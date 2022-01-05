@@ -6,7 +6,7 @@
 CC ?= gcc
 
 CFLAGS = -g -Wall -Wextra -Werror
-LDFLAGS = -g
+LDFLAGS = -g -Wl,--warn-common
 
 ifneq (,$(COVERAGE))
   DEBUG = 1
@@ -32,15 +32,19 @@ check:
 	tests/unhide/run.sh
 	@echo SUCCESS
 
-bin/sym-hider: $(OBJS) Makefile
+bin/sym-hider: $(OBJS) Makefile bin/FLAGS
 	$(CC) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
 
-bin/%.o: src/%.c Makefile
+bin/%.o: src/%.c Makefile bin/FLAGS
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
+
+bin/FLAGS: FORCE
+	if test x"$(CFLAGS) $(LDFLAGS)" != x"$$(cat $@)"; then \
+		echo "$(CFLAGS) $(LDFLAGS)" > $@; \
+	fi
 
 clean:
 	rm -f bin/*
 	find -name \*.gcov -o -name \*.gcno -o -name \*.gcda | xargs rm -rf
 
-.PHONY: clean all check
-
+.PHONY: clean all check FORCE
