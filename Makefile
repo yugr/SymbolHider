@@ -4,6 +4,7 @@
 # found in the LICENSE.txt file.
 
 CC ?= gcc
+DESTDIR ?= /usr/local
 
 CFLAGS = -g -Wall -Wextra -Werror
 LDFLAGS = -g -Wl,--warn-common
@@ -47,4 +48,8 @@ clean:
 	rm -f bin/*
 	find -name \*.gcov -o -name \*.gcno -o -name \*.gcda | xargs rm -rf
 
-.PHONY: clean all check FORCE
+install:
+	mkdir -p $(DESTDIR)
+	install bin/sym-hider $(DESTDIR)/bin
+
+.PHONY: clean all check install FORCE
