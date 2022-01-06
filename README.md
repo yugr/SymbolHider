@@ -2,6 +2,7 @@
 [![Build Status](https://github.com/yugr/SymbolHider/actions/workflows/ci.yml/badge.svg)](https://github.com/yugr/SymbolHider/actions)
 [![codecov](https://codecov.io/gh/yugr/SymbolHider/branch/master/graph/badge.svg)](https://codecov.io/gh/yugr/SymbolHider)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/yugr/SymbolHider.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/yugr/SymbolHider/alerts/)
+[![Coverity Scan](https://scan.coverity.com/projects/yugr-SymbolHider/badge.svg)](https://scan.coverity.com/projects/yugr-SymbolHider)
 
 # What's this?
 
