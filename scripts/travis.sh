@@ -20,8 +20,11 @@ make clean all
 
 make check
 
-# Upload coverage
 if test -n "${COVERAGE:-}"; then
+  # Generate coverage
+  mv bin/*.gc[dn][ao] src
+  gcov src/*.gcno
+  # Upload coverage
   curl --retry 5 -s https://codecov.io/bash > codecov.bash
-  bash codecov.bash -Z
+  bash codecov.bash -Z -X gcov
 fi
