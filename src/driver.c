@@ -101,5 +101,7 @@ int main(int argc, char *argv[]) {
 
   hide_symbols(file, out_file, syms, nsyms, hide);
 
+  free(syms);
+
   return 0;
 }

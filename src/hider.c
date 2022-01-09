@@ -131,4 +131,6 @@ void hide_symbols(const char *file, const char *out_file,
   }
 
   close(out_fd);
+
+  free(start);
 }
