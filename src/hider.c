@@ -25,9 +25,7 @@ extern int warn;
 void hide_symbols(const char *file, const char *out_file,
                   const char **hidden_syms, size_t num_hidden_syms,
                   int hide_or_unhide) {
-  const int inplace = !out_file;
-
-  int fd = open(file, inplace ? O_RDWR : O_RDONLY);
+  int fd = open(file, O_RDONLY);
   if (fd < 0) {
     fprintf(stderr, PREFIX "failed to open %s: %s\n", file, strerror(errno));
     exit(1);
