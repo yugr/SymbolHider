@@ -20,6 +20,20 @@ ifeq (,$(DEBUG))
 else
   CFLAGS += -O0
 endif
+ifneq (,$(ASAN))
+  CFLAGS += -fsanitize=address -fsanitize-address-use-after-scope -U_FORTIFY_SOURCE -fno-common -D_GLIBCXX_DEBUG -D_GLIBCXX_SANITIZE_VECTOR
+  LDFLAGS += -fsanitize=address
+endif
+ifneq (,$(UBSAN))
+  ifneq (,$(shell $(CXX) --version | grep clang))
+    # Isan is clang-only...
+    CFLAGS += -fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer
+    LDFLAGS += -fsanitize=undefined,integer -fno-sanitize-recover=undefined,integer
+  else
+    CFLAGS += -fsanitize=undefined -fno-sanitize-recover=undefined
+    LDFLAGS += -fsanitize=undefined -fno-sanitize-recover=undefined
+  endif
+endif
 
 OBJS = bin/hider.o bin/driver.o
 
@@ -40,8 +54,8 @@ bin/%.o: src/%.c Makefile bin/FLAGS
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 bin/FLAGS: FORCE
-	if test x"$(CFLAGS) $(LDFLAGS)" != x"$$(cat $@)"; then \
-		echo "$(CFLAGS) $(LDFLAGS)" > $@; \
+	if test x"$(CFLAGS) $(CXXFLAGS) $(LDFLAGS)" != x"$$(cat $@)"; then \
+		echo "$(CFLAGS) $(CXXFLAGS) $(LDFLAGS)" > $@; \
 	fi
 
 clean:
