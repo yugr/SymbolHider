@@ -107,6 +107,10 @@ void hide_symbols(const char *file, const char *out_file,
 
   for (Elf64_Xword i = 0; i < sym_count; ++i) {
     Elf64_Sym *sym = &symtab[i];
+    if (! (start <= (char *)sym && (char *)sym < start + file_size)) {
+      fprintf(stderr, PREFIX "invalid symbol table offset in %s at symbol %d\n", file, (int)i);
+      exit(1);
+    }
     const char *name = &strtab[sym->st_name];
     for (size_t j = 0; j < num_hidden_syms; ++j) {
       if (0 == strcmp(hidden_syms[j], name)) {
@@ -121,10 +125,14 @@ void hide_symbols(const char *file, const char *out_file,
   // Write results
 
   int out_fd = open(out_file, O_WRONLY);
+  if (out_fd < 0) {
+    fprintf(stderr, PREFIX "failed to open %s for writing", out_file);
+    exit(1);
+  }
 
   ssize_t written = write(out_fd, start, file_size);
   if (written < 0 || written < file_size) {
-    fprintf(stderr, PREFIX "failed to write output file %s\n", out_file);
+    fprintf(stderr, PREFIX "failed to write data to output file %s\n", out_file);
     exit(1);
   }
 
