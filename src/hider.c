@@ -1,6 +1,6 @@
 /*
  * Copyright 2022 Yury Gribov
- * 
+ *
  * Use of this source code is governed by a BSD-style license that can be
  * found in the LICENSE.txt file.
  */
@@ -126,13 +126,13 @@ void hide_symbols(const char *file, const char *out_file,
 
   int out_fd = open(out_file, O_WRONLY);
   if (out_fd < 0) {
-    fprintf(stderr, PREFIX "failed to open %s for writing", out_file);
+    fprintf(stderr, PREFIX "failed to open %s for writing: %s\n", out_file, strerror(errno));
     exit(1);
   }
 
   ssize_t written = write(out_fd, start, file_size);
   if (written < 0 || written < file_size) {
-    fprintf(stderr, PREFIX "failed to write data to output file %s\n", out_file);
+    fprintf(stderr, PREFIX "failed to write data to output file %s: %s\n", out_file, strerror(errno));
     exit(1);
   }
 
