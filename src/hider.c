@@ -124,7 +124,7 @@ void hide_symbols(const char *file, const char *out_file,
 
   // Write results
 
-  int out_fd = open(out_file, O_WRONLY);
+  int out_fd = open(out_file, O_WRONLY | O_CREAT, 0755);
   if (out_fd < 0) {
     fprintf(stderr, PREFIX "failed to open %s for writing: %s\n", out_file, strerror(errno));
     exit(1);
