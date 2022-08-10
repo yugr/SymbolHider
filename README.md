@@ -20,7 +20,7 @@ $ sym-hider libxyz.so foo bar
 
 To instead _unhide_ some symbols, run tool like
 ```
-$ sym-hider --unhide libxyz.so foo bar
+$ sym-hider --unhide file.o foo bar
 ```
 (usually this will not work for already linked files i.e. executables and shlibs).
 
