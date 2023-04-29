@@ -6,7 +6,7 @@
 
 # What's this?
 
-SymbolHider is a simple tool which hides symbols in shared library's public interface
+SymbolHider is a simple tool which hides symbols in ELF shared library's public interface
 (by rewriting their visibility to `hidden`).
 
 The tool is inspired by @EmployedRussian suggestion in [Is there any way to override the -fvisibility=hidden at link time?](https://stackoverflow.com/questions/36273404/is-there-any-way-to-override-the-fvisibility-hidden-at-link-time) although I also enabled it for a more common case of fully linked binaries.
@@ -32,6 +32,7 @@ $ sym-hider -h
 # TODO
 
 * Support 32-bit ELFs
+* Support DLL and Mach-O (is it possible?)
 * Hide by wildcards
 * More tests
 * Support static libs (?)
